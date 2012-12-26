@@ -14,4 +14,19 @@ Gem::Specification.new do |gem|
   gem.executables   = gem.files.grep(%r{^bin/}).map{|f| File.basename f}
   gem.test_files    = gem.files.grep %r{^ test|spec|features/}
   gem.require_paths = ['lib']
+
+  [
+    'minitest', # Much easier to work with in the REPL (compared to RSpec)
+    'turn', # colorized minitest output
+    'pry-de', # Pull in pry-full plus a few choice bits. More to come
+    'guard',
+    'guard-bundler',
+    'guard-spork',
+    # TODO 'guard-minitest', github: 'rking/guard-minitest'
+    'spork-minitest',
+    'rb-inotify',
+    'rb-fsevent',
+    'pry-rails',
+    'rake',
+  ].each do |dep| gem.add_dependency dep end
 end
