@@ -1,3 +1,4 @@
+$guardhackfixme.instance_eval do
 # Rerun bundler, if needed
 guard 'bundler' do watch /^(Gemfile|.*\.gemspec)$/ end
 
@@ -26,3 +27,4 @@ guard 'minitest', drb: true do
   #    Will need adjustment if you use app/controllers ⇒ test/functional, etc.)
   watch %r|^app/(.*)\.rb| do |m| "test/#{m[1]}_test.rb" end
 end
+end # end hack
