@@ -6,6 +6,8 @@ Whoa!! ☈king's rig.
 - 1:1 mapping between stuff in `lib/` or `app/` and the `test/` dirs.
 - spork in effect for faster runs
 
+Example setup at: https://github.com/rking/monkeynote
+
 ## Installation
 
 Add this line to your application's Gemfile:
