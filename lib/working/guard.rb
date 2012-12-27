@@ -16,7 +16,7 @@ guard 'spork',
   watch 'test/test_helper.rb' do :minitest end
 end
 
-guard 'minitest', drb: true do
+guard 'sporkminitest', drb: true do
   # Minitest::Unit style test files
   watch %r|^test/.*_test\.rb|
   watch %r|^lib/(.*)\.rb| do |m| "test/#{m[1]}_test.rb" end
