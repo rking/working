@@ -1,12 +1,18 @@
 # Working
 
-Whoa!! ☈king's rig.
+Whoa!! ☈king's opinionated rig for Ruby / Ruby+Rails dev.
 
-- guard for test running (`bundle exec guard`)
+- Guard for test running (`bundle exec guard`)
 - 1:1 mapping between stuff in `lib/` or `app/` and the `test/` dirs.
-- spork in effect for faster runs
+- Spork in effect for faster runs
 
-Example setup at: https://github.com/rking/monkeynote
+
+
+## Example uses:
+
+- https://github.com/rking/demo-ruby-tests
+- https://github.com/rking/monkeynote
+- https://github.com/rking/terminal-info
 
 ## Installation
 
@@ -16,8 +22,9 @@ Add this line to your application's Gemfile:
 
 And then execute:
 
-    $ bundle
+    bundle
+    working-init # this tinkers with several files (verbosely)
 
-Or install it yourself as:
+## TODO
 
-    $ gem install working
+Explain the parts.
