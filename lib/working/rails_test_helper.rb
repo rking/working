@@ -4,6 +4,15 @@ ENV['RAILS_ENV'] = 'test'
 require './config/environment'
 require 'rails/test_help'
 
+# For some reason using pry as `rails c` needs this specially defined:
+unless respond_to? :reload!
+  def reload!
+    puts "[Performing .reload!]"
+    ActionDispatch::Reloader.cleanup!
+    ActionDispatch::Reloader.prepare!
+  end
+end
+
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.(yml|csv) for all tests in alphabetical order.
   #
