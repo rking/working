@@ -1,12 +1,14 @@
 # Working
 
-Whoa!! ☈king's opinionated rig for Ruby / Ruby+Rails dev.
+Whoa!! ☈king's opinionated rig for Ruby dev.
 
 - Guard for test running (`bundle exec guard`)
 - 1:1 mapping between stuff in `lib/` or `app/` and the `test/` dirs.
 - Spork in effect for faster runs
 
+# See also:
 
+http://github.com/rking/working-rails
 
 ## Example uses:
 
