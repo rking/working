@@ -3,7 +3,7 @@ Guard::Dsl.new.instance_eval do
   guard 'bundler' do watch /^(Gemfile|.*\.gemspec)$/ end
   # These reboot spork completely
   guard 'spork', minitest: true, test_unit: false do
-    watch /Gemfile(?:\.lock)?/
+    watch /Gemfile\.lock/
   end
   guard 'sporkminitest' do
     # Minitest::Unit style test files
