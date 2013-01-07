@@ -24,7 +24,6 @@ end
     '# vim ft=ruby',
   ],
   'Rakefile' => [
-    # gem TODO require 'bundler/gem_tasks'
     %{require 'working/rake_tasks'}
   ],
   'test/test_helper.rb' => [
