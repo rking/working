@@ -7,7 +7,9 @@ class WorkingGemspecTest < MiniTest::Unit::TestCase
       authors: ['Cod Err'],
       github:  'coderr/mygem',
       email:   'foo@example.com',
-      deps:     %w(a b c)
+      deps:     %w(a b c),
+      summary: 'Hi.',
+      description: 'Hello, how are you?',
     }
   end
 
@@ -28,6 +30,8 @@ class WorkingGemspecTest < MiniTest::Unit::TestCase
       end
     end
     assert_equal 'mygem', gem.name
+    assert_equal 'Hi.', gem.summary
+    assert_equal "Hi.\n\nHello, how are you?", gem.description
     assert_equal ['Cod Err'], gem.authors
     assert_equal 'foo@example.com', gem.email
     assert_equal 'https://github.com/coderr/mygem', gem.homepage
@@ -58,8 +62,9 @@ class WorkingGemspecTest < MiniTest::Unit::TestCase
   end
 
   def test_file_snippet
-    actual = Working.file_snippet(__FILE__, /^require/, /^class/)
-    assert_equal "require './test/test_helper.rb'\n", actual
+    actual = Working.file_snippet(__FILE__, /^require/, /^\s*def/)
+    assert_equal %(require './test/test_helper.rb'
+class WorkingGemspecTest < MiniTest::Unit::TestCase\n), actual
   end
 
   # This is because I put the gem.summary on the 3rd line of the README.rdoc

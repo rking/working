@@ -2,17 +2,27 @@ $:.unshift './lib'
 
 module Working
   README_PATH = 'README.rdoc'
-  REQUIRED_FIELDS = [:name, :authors, :email, :version, :github, :deps]
+  REQUIRED_FIELDS = [
+    :name,
+    :summary,
+    :description,
+    :authors,
+    :email,
+    :version,
+    :github,
+    :deps,
+  ]
 
   class << self
     def gemspec args
       validate_gem_args! args
       require_version_file args[:name]
       Gem::Specification.new do |gem|
-        gem.name    = args[:name]
-        gem.authors = args[:authors]
-        gem.email   = args[:email]
-        gem.version = args[:version]
+        [ :name, :summary, :authors, :email, :version ].each do |e|
+          gem.send "#{e}=", args[e]
+        end
+
+        gem.description = gem.summary + "\n\n" + args[:description]
 
         gem.homepage = 'https://github.com/' + args[:github]
 
@@ -30,11 +40,11 @@ module Working
       args = input.dup
       missing_fields = REQUIRED_FIELDS.find_all{|e| !args.delete e}
       fail <<-EOT unless args.size.zero?
-Working.gem got #{args.keys.join ' '},
-but only expected #{REQUIRED_FIELDS.map(&:to_s).join ' '}
+Working.gem got #{args.keys.join ' and '},
+but only expected #{REQUIRED_FIELDS.map(&:to_s).join ', '}
       EOT
       return if missing_fields.size.zero?
-      fail "Working.gem needs: #{missing_fields.map(&:to_s).join ' '}"
+      fail "Working.gem needs: #{missing_fields.map(&:to_s).join ', '}"
     end
 
     def git_ls_files
@@ -43,16 +53,19 @@ but only expected #{REQUIRED_FIELDS.map(&:to_s).join ' '}
 
     def require_version_file name
       require name
+    rescue LoadError
+      # Do nothing
     end
 
     def file_snippet path, start_pattern, end_pattern
       desired = []
+      in_desired_region = false
       File.readlines(path).each do |e|
-        return desired.join if e[end_pattern]
+        break if e[end_pattern]
         in_desired_region = true if e[start_pattern]
         desired << e if in_desired_region
       end
-      desired
+      desired.join
     end
     def readme_snippet start_pattern, end_pattern
       file_snippet README_PATH, start_pattern, end_pattern
