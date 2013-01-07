@@ -1,5 +1,16 @@
 require './test/test_helper.rb'
 class WorkingGemspecTest < MiniTest::Unit::TestCase
+  def valid_working_gemspec_args
+    {
+      name:    'mygem', # TODO: Deduce this
+      version: '0.2.3', # TODO: Deduce MyGem::VERSION (from file?)
+      authors: ['Cod Err'],
+      github:  'coderr/mygem',
+      email:   'foo@example.com',
+      deps:     %w(a b c)
+    }
+  end
+
   def test_dsl
     gem = nil
     fake_file_list = %w(
@@ -12,13 +23,8 @@ class WorkingGemspecTest < MiniTest::Unit::TestCase
     version_file_arg = nil
     Working.stub :require_version_file, -> path { version_file_arg = path } do
       Working.stub :git_ls_files, fake_file_list do
-        gem = Working.gemspec \
-          name:    'mygem', # TODO: Deduce this
-          version: '0.2.3', # TODO: Deduce MyGem::VERSION (from file?)
-          authors: ['Cod Err'],
-          github:  'coderr/mygem',
-          email:   'foo@example.com',
-          deps:     %w(a b c)
+        args = valid_working_gemspec_args
+        gem = Working.gemspec args
       end
     end
     assert_equal 'mygem', gem.name
@@ -33,6 +39,24 @@ class WorkingGemspecTest < MiniTest::Unit::TestCase
     assert_equal 'mygem', version_file_arg
   end
 
+  def test_verbose_failure
+    args = valid_working_gemspec_args
+    required_fields = %w(name authors email version github deps)
+    required_fields.each do |e|
+      begin
+        bad_args = args.dup
+        bad_args.delete e.to_sym
+        Working.gemspec bad_args
+      rescue => err
+        assert_match e, err.message
+      end
+    end
+
+    assert_raises RuntimeError do
+      Working.gemspec valid_working_gemspec_args.merge hi: 1
+    end
+  end
+
   def test_file_snippet
     actual = Working.file_snippet(__FILE__, /^require/, /^class/)
     assert_equal "require './test/test_helper.rb'\n", actual
@@ -40,6 +64,7 @@ class WorkingGemspecTest < MiniTest::Unit::TestCase
 
   # This is because I put the gem.summary on the 3rd line of the README.rdoc
   def test_third_line
-    assert_equal "  def test_dsl\n", Working.file_third_line(__FILE__)
+    assert_equal "  def valid_working_gemspec_args\n",
+      Working.file_third_line(__FILE__)
   end
 end

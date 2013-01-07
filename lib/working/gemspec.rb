@@ -2,9 +2,11 @@ $:.unshift './lib'
 
 module Working
   README_PATH = 'README.rdoc'
+  REQUIRED_FIELDS = [:name, :authors, :email, :version, :github, :deps]
 
   class << self
     def gemspec args
+      validate_gem_args! args
       require_version_file args[:name]
       Gem::Specification.new do |gem|
         gem.name    = args[:name]
@@ -22,6 +24,17 @@ module Working
           gem.add_dependency e
         end
       end
+    end
+
+    def validate_gem_args! input
+      args = input.dup
+      missing_fields = REQUIRED_FIELDS.find_all{|e| !args.delete e}
+      fail <<-EOT unless args.size.zero?
+Working.gem got #{args.keys.join ' '},
+but only expected #{REQUIRED_FIELDS.map(&:to_s).join ' '}
+      EOT
+      return if missing_fields.size.zero?
+      fail "Working.gem needs: #{missing_fields.map(&:to_s).join ' '}"
     end
 
     def git_ls_files
