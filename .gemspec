@@ -20,7 +20,11 @@ Gem::Specification.new do |gem|
     'minitest', # Much easier to work with in the REPL (compared to RSpec)
     'turn', # colorized minitest output
     'guard-sporkminitest', # Run tests in long-running process, for speed
-    'guard-bundler', # Watch Gemfile, *.gemspec to run 'bundle install'
+
+    'rb-inotify', # Does nothing, except on Linux
+    'rb-fsevent', # Does nothing, except on Darwin
+    # Skipping the FreeBSD one, until somebody asks for it.
+
     'rake',
   ].each do |dep| gem.add_dependency dep end
 end

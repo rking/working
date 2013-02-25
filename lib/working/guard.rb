@@ -1,6 +1,6 @@
+%w(rb-inotify rb-fsevent).each{|e| require e}
+
 Guard::Dsl.new.instance_eval do
-  # Rerun bundler, if needed
-  guard 'bundler' do watch /^(Gemfile|.*\.gemspec)$/ end
   # These reboot spork completely
   guard 'spork', minitest: true, test_unit: false do
     watch /Gemfile\.lock/
