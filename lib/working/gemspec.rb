@@ -1,7 +1,7 @@
 $:.unshift './lib'
 
 module Working
-  README_PATH = 'README.rdoc'
+  README_PATH = Dir['README.{rdoc,md}'].first
   REQUIRED_FIELDS = [
     :name,
     :summary,
