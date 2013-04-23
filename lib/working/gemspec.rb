@@ -1,5 +1,12 @@
 $:.unshift './lib'
 
+version_file_name = (Dir['lib/*/version.rb']||[]).first
+if version_file_name
+  load version_file_name
+  version_file_name.match %r|.+lib/([^/]+)/version.rb|
+  $deduced_project_name = $1
+end
+
 module Working
   README_PATH = Dir['README.{rdoc,md}'].first
   REQUIRED_FIELDS = [
@@ -38,13 +45,14 @@ module Working
 
     def validate_gem_args! input
       args = input.dup
+      args[:name] ||= $deduced_project_name if $deduced_project_name
       missing_fields = REQUIRED_FIELDS.find_all{|e| !args.delete e}
       fail <<-EOT unless args.size.zero?
 Working.gem got #{args.keys.join ' and '},
 but only expected #{REQUIRED_FIELDS.map(&:to_s).join ', '}
       EOT
       return if missing_fields.size.zero?
-      fail "Working.gem needs: #{missing_fields.map(&:to_s).join ', '}"
+      fail "Working.gemspec needs: #{missing_fields.map(&:to_s).join ', '}"
     end
 
     def git_ls_files
